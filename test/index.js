@@ -1,2 +1,2 @@
-require('./lexer')
-require('./parser')
+require('./lexer');
+require('./parser');

@@ -5,8 +5,8 @@
  * Licensed under the MIT license.
  */
 
-'use strict'
+'use strict';
 
-module.exports.Lexer = require('./lib/Lexer')
-module.exports.Parser = require('./lib/Parser')
-module.exports.nodeTypes = require('./lib/node/')
+module.exports.Lexer = require('./lib/Lexer');
+module.exports.Parser = require('./lib/Parser');
+module.exports.nodeTypes = require('./lib/node/');

@@ -1,11 +1,11 @@
 {
-  "name": "mr-parser",
-  "version": "0.2.1",
+  "name": "json-logic-parser",
+  "version": "0.0.1",
   "description": "parses mathematical expressions and outputs an AST that represents the expression",
-  "bugs": "https://github.com/maurizzzio/mr-parser/issues",
+  "bugs": "https://github.com/raunokulla/json-logic-parser/issues",
   "license": "MIT",
   "main": "index.js",
-  "author": "Mauricio Poppe <mauricio.poppe@gmail.com>",
+  "author": "Rauno Kulla <rauno.kulla@gmail.com>",
   "files": [
     "index.js",
     "lib",
@@ -13,9 +13,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/maurizzzio/mr-parser"
+    "url": "https://github.com/raunokulla/json-logic-parser"
   },
   "keywords": [
+    "json-logic-parser",
     "mr-parser",
     "parser",
     "math",

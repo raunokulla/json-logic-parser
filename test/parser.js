@@ -327,7 +327,7 @@ test('parser:functionCall', function (t) {
       { var: 'x' }
     ]
   }]);
-  t.deepEquals(parse('f(x, y)'), [{
+  t.deepEquals(parse('f((x, y))'), [{
     'f': [
       { var: 'x' },
       { var: 'y' }

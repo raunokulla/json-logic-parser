@@ -9,7 +9,7 @@ function parse (exp) {
 }
 
 test('parser:number', function (t) {
-  t.deepEquals(parse('32'), ['32']);
+  t.deepEquals(parse('32'), [32]);
   t.end();
 });
 
@@ -17,7 +17,7 @@ test('parser:assignment', function (t) {
   t.deepEquals(parse('x = 1 + 2'), [{
     name: 'x',
     expr: {
-      '+': ['1', '2']
+      '+': [1, 2]
     }
   }]);
   t.end();
@@ -25,7 +25,7 @@ test('parser:assignment', function (t) {
 
 test('parser:ternary', function (t) {
   t.deepEquals(parse('1 ? a : b'), [{
-    condition: '1',
+    condition: 1,
     trueExpr: { var: 'a' },
     falseExpr: { var: 'b' }
   }]);
@@ -40,9 +40,9 @@ test('parser:ternary', function (t) {
     falseExpr: { var: 'b' }
   }]);
   t.deepEquals(parse('1 ? 2 ? a : b : c'), [{
-    condition: '1',
+    condition: 1,
     trueExpr: {
-      condition: '2',
+      condition: 2,
       trueExpr: { var: 'a' },
       falseExpr: { var: 'b' }
     },
@@ -53,12 +53,12 @@ test('parser:ternary', function (t) {
 
 test('parser:logicalOR', function (t) {
   t.deepEquals(parse('1 || 2'), [{
-    '||': ['1', '2']
+    '||': [1, 2]
   }]);
   t.deepEquals(parse('1 || 3 || 2'), [{
-    '||': ['1',
+    '||': [1,
       {
-        '||': ['3', '2']
+        '||': [3, 2]
       }
     ]
   }]);
@@ -67,13 +67,13 @@ test('parser:logicalOR', function (t) {
 
 test('parser:logicalXOR', function (t) {
   t.deepEquals(parse('1 xor 2'), [{
-    'xor': ['1', '2']
+    'xor': [1, 2]
   }]);
   t.deepEquals(parse('1 xor 3 xor 2'), [{
     'xor': [
-      '1',
+      1,
       {
-        'xor': ['3', '2']
+        'xor': [3, 2]
       }
     ]
   }]);
@@ -82,12 +82,12 @@ test('parser:logicalXOR', function (t) {
 
 test('parser:logicalAND', function (t) {
   t.deepEquals(parse('1 && 2'), [{
-    '&&': ['1', '2']
+    '&&': [1, 2]
   }]);
   t.deepEquals(parse('1 && 3 && 2'), [{
     '&&': [
-      '1', {
-        '&&': ['3', '2']
+      1, {
+        '&&': [3, 2]
       }
     ]
   }]);
@@ -96,13 +96,13 @@ test('parser:logicalAND', function (t) {
 
 test('parser:bitwiseOR', function (t) {
   t.deepEquals(parse('1 | 2'), [{
-    '|': ['1', '2']
+    '|': [1, 2]
   }]);
   t.deepEquals(parse('1 | 3 | 2'), [{
     '|': [
-      '1',
+      1,
       {
-        '|': ['3', '2']
+        '|': [3, 2]
       }
     ]
   }]);
@@ -111,13 +111,13 @@ test('parser:bitwiseOR', function (t) {
 
 test('parser:bitwiseXOR', function (t) {
   t.deepEquals(parse('1 ^| 2'), [{
-    '^|': ['1', '2']
+    '^|': [1, 2]
   }]);
   t.deepEquals(parse('1 ^| 3 ^| 2'), [{
     '^|': [
-      '1',
+      1,
       {
-        '^|': ['3', '2']
+        '^|': [3, 2]
       }
     ]
   }]);
@@ -126,12 +126,12 @@ test('parser:bitwiseXOR', function (t) {
 
 test('parser:bitwiseAND', function (t) {
   t.deepEquals(parse('1 & 2'), [{
-    '&':['1', '2']
+    '&':[1, 2]
   }]);
   t.deepEquals(parse('1 & 3 & 2'), [{
     '&': [
-      '1',{
-        '&': ['3', '2']
+      1,{
+        '&': [3, 2]
       }
     ]
   }]);
@@ -140,20 +140,20 @@ test('parser:bitwiseAND', function (t) {
 
 test('parser:relational', function (t) {
   t.deepEquals(parse('1 != 2'), [{
-    '!=': ['1', '2']
+    '!=': [1, 2]
   }]);
   t.end();
 });
 
 test('parser:shift', function (t) {
   t.deepEquals(parse('1 << 2'), [{
-    '<<': ['1', '2']
+    '<<': [1, 2]
   }]);
   t.deepEquals(parse('1 << 3 >> 2'), [{
     '<<': [
-      '1',
+      1,
       {
-        '>>': ['3', '2']
+        '>>': [3, 2]
       }
     ]
   }]);
@@ -162,12 +162,12 @@ test('parser:shift', function (t) {
 
 test('parser:additive', function (t) {
   t.deepEquals(parse('32 + 3'), [{
-    '+': ['32', '3']
+    '+': [32, 3]
   }]);
   t.deepEquals(parse('1 + 2 - 3'), [{
     '-': [{
-      '+': ['1', '2']
-    }, '3']
+      '+': [1, 2]
+    }, 3]
   }]);
   t.throws(function () { parse('1 + 2 -') });
   t.throws(function () { parse('1 + 2 - *') });
@@ -176,67 +176,67 @@ test('parser:additive', function (t) {
 
 test('parser:multiplicative', function (t) {
   t.deepEquals(parse('32 * 3'), [{
-    '*': ['32', '3']
+    '*': [32, 3]
   }]);
   t.deepEquals(parse('1 * 2 * 3'), [{
     '*': [{
-      '*': ['1', '2']
-    }, '3']
+      '*': [1, 2]
+    }, 3]
   }]);
   t.deepEquals(parse('1 * 2 + 3'), [{
     '+': [{
-      '*': ['1', '2']
-    }, '3']
+      '*': [1, 2]
+    }, 3]
   }]);
   t.deepEquals(parse('1 + 2 * 3'), [{
     '+': [
-      '1', {
-      '*': ['2', '3']
+      1, {
+      '*': [2, 3]
     }]
   }]);
   t.deepEquals(parse('1 / 2 * 3 / 4 * 5'), [{
     '*': [{
       '/': [{
         '*': [{
-          '/': [ '1', '2']
-        }, '3']
-      }, '4']
-    }, '5']
+          '/': [ 1, 2]
+        }, 3]
+      }, 4]
+    }, 5]
   }]);
   t.deepEquals(parse('1 * 2 + 3 * 4'), [{
     '+': [{
-      '*': ['1', '2']
+      '*': [1, 2]
     }, {
-      '*': ['3', '4']
+      '*': [3, 4]
     }]
   }]);
   t.deepEquals(parse('1 % 2 + 3 / 4 + 5'), [{
     '+': [{
       '+': [{
-        '%': ['1', '2']
+        '%': [1, 2]
       }, {
-        '/': ['3', '4']
+        '/': [3, 4]
       }]
-    }, '5']
+    }, 5]
   }]);
   t.deepEquals(parse('2x'), [{
-    '*': ['2', { var: 'x' }]
+    '*': [2, { var: 'x' }]
   }]);
   t.deepEquals(parse('2 x'), [{
-    '*': ['2', { var: 'x' }]
+    '*': [2, { var: 'x' }]
   }]);
   t.deepEquals(parse('2(x)'), [{
-    '*': ['2', { var: 'x' }]
+    '*': [2, { var: 'x' }]
   }]);
   t.deepEquals(parse('(2)(x)'), [{
-    '*': [ '2', { var: 'x' }]
+    '*': [ 2, { var: 'x' }]
   }]);
   t.deepEquals(parse('(2)2'), [{
-    '*': ['2', '2']
+    '*': [2, 2]
   }]);
   t.deepEquals(parse('2 x y'), [{
     '*': [
-      '2', {
+      2, {
         '*': [
           { var: 'x' },
           { var: 'y' }
@@ -251,29 +251,29 @@ test('parser:multiplicative', function (t) {
 
 test('parser:unary', function (t) {
   t.deepEquals(parse('1 + -2'), [{
-    '+': ['1', {
-      '-': '2'}]
+    '+': [1, {
+      '-': 2}]
   }]);
   t.deepEquals(parse('+-+2'), [{
     '+': {
       '-': {
-        '+': '2'
+        '+': 2
       }
     }
   }]);
   t.deepEquals(parse('-1 - -2'), [{
     '-': [{
-      '-': '1'
+      '-': 1
     }, {
-      '-': '2'
+      '-': 2
     }]
   }]);
   t.deepEquals(parse('-(3 - -2)'), [{
     '-': {
       '-': [
-        '3',
+        3,
         {
-          '-': '2'
+          '-': 2
         }
       ]
     }
@@ -283,16 +283,16 @@ test('parser:unary', function (t) {
 
 test('parser:pow', function (t) {
   t.deepEquals(parse('2^3'), [{
-    '^': ['2', '3']
+    '^': [2, 3]
   }]);
   t.deepEquals(parse('2 ^ 3 ^ 4'), [{
-    '^': ['2', {
-      '^': ['3','4']
+    '^': [2, {
+      '^': [3,4]
     }]
   }]);
   t.deepEquals(parse('1 ^ -2'), [{
-    '^': ['1', {
-      '-': '2'
+    '^': [1, {
+      '-': 2
     }]
   }]);
   t.end();
@@ -300,7 +300,7 @@ test('parser:pow', function (t) {
 
 test('parser:factorial', function (t) {
   t.deepEquals(parse('2!'), [{
-    '!': ['2']
+    '!': [2]
   }]);
   t.end();
 });
@@ -352,8 +352,8 @@ test('parser:string', function (t) {
 test('parser:array', function (t) {
   t.deepEquals(parse('[]'), [[]]);
   t.deepEquals(parse('[2, 3]'), [[
-      '2',
-      '3'
+      2,
+      3
     ]]);
   t.throws(function () { parse('[') });
   t.throws(function () { parse('[2, 2[]') });
@@ -362,23 +362,23 @@ test('parser:array', function (t) {
 });
 
 test('parser:parentheses', function (t) {
-  t.deepEquals(parse('(32)'), ['32']);
+  t.deepEquals(parse('(32)'), [32]);
   t.deepEquals(parse('(1 + 2 - 3)'), [{
     '-': [{
-      '+': ['1', '2']
-    }, '3']
+      '+': [1, 2]
+    }, 3]
   }]);
   t.deepEquals(parse('(1 + 2) - 3'), [{
     '-': [{
-      '+': ['1', '2']
-    }, '3']
+      '+': [1, 2]
+    }, 3]
   }]);
   t.deepEquals(parse('1 * (2 + 3) * 4'), [{
     '*': [{
-      '*': [ '1', {
-        '+': ['2', '3']
+      '*': [ 1, {
+        '+': [2, 3]
       }]
-    }, '4']
+    }, 4]
   }]);
   t.throws(function () {
     parse('1 + (2 + 3')
@@ -403,7 +403,7 @@ test('parser:complex', function (t) {
     }]
   }]);
   t.deepEquals(parse('1/cos(PI)'), [{
-    '/': ['1', {
+    '/': [1, {
       'cos': [{
         var: 'PI'
       }]
@@ -424,15 +424,15 @@ test('parser:complex', function (t) {
       }]
     }, {
       '*': [{
-        '/': ['1', {
+        '/': [1, {
           'cos': [{
             var: 'PI'
           }]
         }]
       }, {
         '^': [{
-          '+': ['1', '3']
-        }, '2']
+          '+': [1, 3]
+        }, 2]
       }]
     }]
   }]);
